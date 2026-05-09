@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Test and improve your typing speed with our professional typing speed test. Measure WPM, accuracy, and track your progress.">
+  <title>Typing Speed Test - Measure Your WPM & Accuracy</title>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <h1 class="header__title">Typing Speed Test</h1>
+      <p class="header__subtitle">Test your typing speed and accuracy</p>
+    </header>
+
+    <!-- Difficulty Selector -->
+    <div class="difficulty-selector" role="tablist" aria-label="Difficulty level">
+      <button
+        class="difficulty-btn"
+        data-difficulty="easy"
+        role="tab"
+        aria-selected="false"
+        aria-controls="test-area">
+        Easy
+      </button>
+      <button
+        class="difficulty-btn active"
+        data-difficulty="medium"
+        role="tab"
+        aria-selected="true"
+        aria-controls="test-area">
+        Medium
+      </button>
+      <button
+        class="difficulty-btn"
+        data-difficulty="hard"
+        role="tab"
+        aria-selected="false"
+        aria-controls="test-area">
+        Hard
+      </button>
+      <button
+        class="difficulty-btn"
+        data-difficulty="practice"
+        role="tab"
+        aria-selected="false"
+        aria-controls="test-area">
+        Practice
+      </button>
+      <button
+        class="difficulty-btn"
+        data-difficulty="custom"
+        role="tab"
+        aria-selected="false"
+        aria-controls="test-area">
+        Custom
+      </button>
+    </div>
+
+    <!-- Test Area -->
+    <main id="test-area" class="test-area" role="main">
+      <!-- Text Display -->
+      <div
+        id="text-display"
+        class="text-display"
+        role="article"
+        aria-label="Text to type"
+        aria-live="polite">
+        <!-- Text will be dynamically inserted here -->
+      </div>
+
+      <!-- Input Area -->
+      <div class="input-area">
+        <label for="input-field" class="sr-only">Type the text here</label>
+        <input
+          type="text"
+          id="input-field"
+          class="input-field"
+          placeholder="Click here or start typing to begin..."
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          aria-label="Typing input field">
+      </div>
+
+      <!-- Stats Bar -->
+      <div class="stats-bar" role="status" aria-live="polite">
+        <div class="stat">
+          <div class="stat__label">Time</div>
+          <div class="stat__value" id="timer" aria-label="Time remaining">60</div>
+        </div>
+        <div class="stat">
+          <div class="stat__label">WPM</div>
+          <div class="stat__value" id="wpm" aria-label="Words per minute">0</div>
+        </div>
+        <div class="stat">
+          <div class="stat__label">Accuracy</div>
+          <div class="stat__value" id="accuracy" aria-label="Accuracy percentage">100%</div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Results Section -->
+    <section id="results" class="results" role="region" aria-label="Test results">
+      <h2 class="results__title">Test Complete!</h2>
+
+      <div class="results__stats">
+        <div class="results__stat">
+          <div class="results__stat-label">WPM</div>
+          <div class="results__stat-value" id="results-wpm">0</div>
+        </div>
+        <div class="results__stat">
+          <div class="results__stat-label">Accuracy</div>
+          <div class="results__stat-value" id="results-accuracy">0%</div>
+        </div>
+        <div class="results__stat">
+          <div class="results__stat-label">Time</div>
+          <div class="results__stat-value" id="results-time">0s</div>
+        </div>
+        <div class="results__stat">
+          <div class="results__stat-label">Correct</div>
+          <div class="results__stat-value" id="results-correct">0</div>
+        </div>
+        <div class="results__stat">
+          <div class="results__stat-label">Incorrect</div>
+          <div class="results__stat-value" id="results-incorrect">0</div>
+        </div>
+        <div class="results__stat">
+          <div class="results__stat-label">Total</div>
+          <div class="results__stat-value" id="results-total">0</div>
+        </div>
+      </div>
+
+      <div class="results__actions">
+        <button id="restart-btn" class="btn btn-primary">
+          Try Again
+        </button>
+        <button id="new-test-btn" class="btn btn-secondary">
+          New Test
+        </button>
+      </div>
+    </section>
+
+    <!-- History Section -->
+    <section class="history" role="region" aria-label="Test history">
+      <div class="history__header">
+        <h2 class="history__title">Recent Tests</h2>
+        <button id="clear-history-btn" class="history__clear" aria-label="Clear test history">
+          Clear History
+        </button>
+      </div>
+      <div id="history-list" class="history__list">
+        <!-- History items will be dynamically inserted here -->
+      </div>
+    </section>
+  </div>
+
+  <!-- Custom Text Modal -->
+  <div id="custom-modal" class="modal" role="dialog" aria-labelledby="modal-title" aria-modal="true">
+    <div class="modal__content">
+      <div class="modal__header">
+        <h2 id="modal-title" class="modal__title">Custom Text</h2>
+        <button id="modal-close-btn" class="modal__close" aria-label="Close modal">
+          &times;
+        </button>
+      </div>
+
+      <label for="custom-textarea" class="sr-only">Enter your custom text</label>
+      <textarea
+        id="custom-textarea"
+        class="modal__textarea"
+        placeholder="Paste or type your custom text here (50-2000 characters)..."
+        aria-describedby="custom-text-info"></textarea>
+
+      <p id="custom-text-info" class="modal__info">
+        Enter between 50 and 2000 characters for your custom typing test.
+      </p>
+
+      <div class="modal__actions">
+        <button id="custom-start-btn" class="btn btn-primary">
+          Start Test
+        </button>
+        <button id="custom-cancel-btn" class="btn btn-secondary">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Practice Modal -->
+  <div id="practice-modal" class="modal" role="dialog" aria-labelledby="practice-modal-title" aria-modal="true">
+    <div class="modal__content modal__content--large">
+      <div class="modal__header">
+        <h2 id="practice-modal-title" class="modal__title">Practice Lessons</h2>
+        <button id="practice-modal-close-btn" class="modal__close" aria-label="Close modal">
+          &times;
+        </button>
+      </div>
+
+      <div class="practice-lessons">
+        <div class="practice-lesson" data-lesson="home-row">
+          <div class="practice-lesson__header">
+            <h3 class="practice-lesson__title">Home Row Keys</h3>
+            <span class="practice-lesson__badge">Beginner</span>
+          </div>
+          <p class="practice-lesson__description">Master the foundation: A S D F J K L</p>
+          <button class="btn btn-primary practice-lesson__btn">Start Lesson</button>
+        </div>
+
+        <div class="practice-lesson" data-lesson="top-row">
+          <div class="practice-lesson__header">
+            <h3 class="practice-lesson__title">Top Row Keys</h3>
+            <span class="practice-lesson__badge">Beginner</span>
+          </div>
+          <p class="practice-lesson__description">Practice: Q W E R T Y U I O P</p>
+          <button class="btn btn-primary practice-lesson__btn">Start Lesson</button>
+        </div>
+
+        <div class="practice-lesson" data-lesson="bottom-row">
+          <div class="practice-lesson__header">
+            <h3 class="practice-lesson__title">Bottom Row Keys</h3>
+            <span class="practice-lesson__badge">Beginner</span>
+          </div>
+          <p class="practice-lesson__description">Practice: Z X C V B N M</p>
+          <button class="btn btn-primary practice-lesson__btn">Start Lesson</button>
+        </div>
+
+        <div class="practice-lesson" data-lesson="numbers">
+          <div class="practice-lesson__header">
+            <h3 class="practice-lesson__title">Numbers</h3>
+            <span class="practice-lesson__badge practice-lesson__badge--intermediate">Intermediate</span>
+          </div>
+          <p class="practice-lesson__description">Practice typing numbers: 0-9</p>
+          <button class="btn btn-primary practice-lesson__btn">Start Lesson</button>
+        </div>
+
+        <div class="practice-lesson" data-lesson="punctuation">
+          <div class="practice-lesson__header">
+            <h3 class="practice-lesson__title">Punctuation</h3>
+            <span class="practice-lesson__badge practice-lesson__badge--intermediate">Intermediate</span>
+          </div>
+          <p class="practice-lesson__description">Master special characters and punctuation</p>
+          <button class="btn btn-primary practice-lesson__btn">Start Lesson</button>
+        </div>
+
+        <div class="practice-lesson" data-lesson="common-words">
+          <div class="practice-lesson__header">
+            <h3 class="practice-lesson__title">Common Words</h3>
+            <span class="practice-lesson__badge practice-lesson__badge--advanced">Advanced</span>
+          </div>
+          <p class="practice-lesson__description">Practice frequently used English words</p>
+          <button class="btn btn-primary practice-lesson__btn">Start Lesson</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen Reader Announcements -->
+  <div id="screen-reader-announcement" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Scripts -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
