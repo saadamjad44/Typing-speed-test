@@ -5,6 +5,7 @@ class TestEngine {
   constructor(text, duration = 60) {
     this.originalText = text;
     this.duration = duration;
+    this.onTestEnd = null; // Callback for when test ends
     this.reset();
   }
 
@@ -36,6 +37,10 @@ class TestEngine {
       // Check if time is up
       if (this.elapsedTime >= this.duration) {
         this.end();
+        // Call the callback if it exists
+        if (this.onTestEnd) {
+          this.onTestEnd();
+        }
       }
     }, 100); // Update every 100ms for smooth display
 

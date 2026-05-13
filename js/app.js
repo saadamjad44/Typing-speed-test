@@ -161,8 +161,19 @@ class TypingTestApp {
   }
 
   initializeTest(text) {
+    // Stop any existing stats update loop
+    this.stopStatsUpdateLoop();
+
     // Create new test engine
     this.testEngine = new TestEngine(text, 60);
+
+    // Set up callback for when test ends
+    this.testEngine.onTestEnd = () => {
+      this.completeTest();
+    };
+
+    // Start stats update loop
+    this.startStatsUpdateLoop();
 
     // Render text display
     this.renderTextDisplay();
@@ -213,6 +224,27 @@ class TypingTestApp {
     }
   }
 
+  startStatsUpdateLoop() {
+    // Clear any existing interval
+    if (this.statsUpdateInterval) {
+      clearInterval(this.statsUpdateInterval);
+    }
+
+    // Update stats every 100ms for smooth timer display
+    this.statsUpdateInterval = setInterval(() => {
+      if (this.testEngine && this.testEngine.isActive) {
+        this.updateStats();
+      }
+    }, 100);
+  }
+
+  stopStatsUpdateLoop() {
+    if (this.statsUpdateInterval) {
+      clearInterval(this.statsUpdateInterval);
+      this.statsUpdateInterval = null;
+    }
+  }
+
   handleKeyDown(e) {
     if (e.key === 'Backspace' && this.inputField.value === '') {
       e.preventDefault();
@@ -250,6 +282,7 @@ class TypingTestApp {
 
   completeTest() {
     this.testEngine.end();
+    this.stopStatsUpdateLoop();
     this.inputField.disabled = true;
 
     const results = this.testEngine.getResults();
